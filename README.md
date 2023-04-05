@@ -1,5 +1,6 @@
 
-
+入門 WebAssembly https://www.shoeisha.co.jp/book/detail/9784798173597
+（正誤表もあり）
 
 
 
