@@ -113,6 +113,8 @@ https://marketplace.visualstudio.com/items?itemName=dtsvet.vscode-wasm
 
 ミスっている箇所を赤字で強調してくれるので分かりやすい。
 
+![](img/codesnap_typo_error_with_red_color.png)
+
 
 ## 最新の Instructions Set
 
