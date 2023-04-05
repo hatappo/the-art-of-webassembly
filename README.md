@@ -10,6 +10,9 @@
 
 
 
+[JavaScriptの数値型完全理解 - Qiita](https://qiita.com/uhyo/items/f9abb94bcc0374d7ed23)
+Javascript の数値型は、すべて 64 ビットの浮動小数点数で表現されている。
+整数と小数が区別されているようで、されていない。
 
 
 
@@ -70,7 +73,33 @@ $ wat2wasm
     --gc garbage collection (proposal)
 ```
 
+実行例
 
+```sh
+$ wat2wasm AddInt.wat 
+
+========================================================
+  WAT2WASM
+========================================================
+  
+
+  Need help?  
+  Contact Rick Battagline
+  Twitter: @battagline
+  https://wasmbook.com
+  v1.0.43
+  
+no memory
+Writing to AddInt.wasm
+WASM File Saved!
+
+$ node AddInt.js 4 7
+4 + 7 = 11
+
+$ node AddInt.js 100 23
+100 + 23 = 123
+
+```
 
 
 ## エディタ環境
