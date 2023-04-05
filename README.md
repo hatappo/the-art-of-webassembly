@@ -6,7 +6,7 @@
 
 
 
-# Chapter 2
+## Chapter 2
 
 
 
@@ -23,9 +23,9 @@ Javascript の数値型は、すべて 64 ビットの浮動小数点数で表�
 
 
 
-# Chapter 1
+## Chapter 1
 
-## コンパイル環境
+### コンパイル環境
 
 ```
 $ node -v
@@ -73,7 +73,7 @@ $ wat2wasm
     --gc garbage collection (proposal)
 ```
 
-実行例
+### 実行例
 
 ```sh
 $ wat2wasm AddInt.wat 
@@ -102,7 +102,7 @@ $ node AddInt.js 100 23
 ```
 
 
-## エディタ環境
+### エディタ環境
 
 https://marketplace.visualstudio.com/items?itemName=dtsvet.vscode-wasm
 
@@ -116,7 +116,7 @@ https://marketplace.visualstudio.com/items?itemName=dtsvet.vscode-wasm
 ![](img/codesnap_typo_error_with_red_color.png)
 
 
-## 最新の Instructions Set
+### 最新の Instructions Set
 
 たぶん v2.0 draft
 
