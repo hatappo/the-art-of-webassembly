@@ -9,14 +9,44 @@
 ## Chapter 2
 
 
-
+### Javascript の数値型
 [JavaScriptの数値型完全理解 - Qiita](https://qiita.com/uhyo/items/f9abb94bcc0374d7ed23)
 Javascript の数値型は、すべて 64 ビットの浮動小数点数で表現されている。
 整数と小数が区別されているようで、されていない。
 
+#### .wasm ファイルを読み込むイディオム（Javascript側）
+
+```js
+const fs = require('fs');
+const bytes = fs.readFileSync(__dirname + '/xxxxxxxx.wasm');
+```
+
+このイディオムは、次のようにすることで `xxxxxxxx` の部分を JS のファイル名から取得できるので毎度変更して書かなくてよくなる。
+
+```js
+const fs = require('fs');
+const basename = __filename.split(/[./]/).reverse()[1];
+const bytes = fs.readFileSync(__dirname + '/' + basename + '.wasm');
+```
 
 
+#### wasm 側の関数を呼び出すイディオム（Javascript側）
 
+即時実行関数式 (IIFE) の最後の `()` を忘れがちなので注意。
+
+```js
+(async () => {
+  let obj = await WebAssembly.instantiate(
+    new Uint8Array(bytes),
+    importObject);
+
+  xxxx_func = obj.instance.exports.xxxx_func;
+
+  const xxxx_func_result = xxxx_func();
+  // ...
+
+})();
+```
 
 
 
