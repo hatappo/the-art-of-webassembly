@@ -2,12 +2,78 @@
 入門 WebAssembly https://www.shoeisha.co.jp/book/detail/9784798173597
 （正誤表もあり）
 
+## よく使うイディオム
+
+```js
+const fs = require('fs');
+const basename = __filename.split(/[./]/).reverse()[1];
+const bytes = fs.readFileSync(`${__dirname}/${basename}.wasm`);
+
+
+(async () => {
+  let obj = await WebAssembly.instantiate(
+    new Uint8Array(bytes),
+    importObject);
+
+  xxxx_func = obj.instance.exports.xxxx_func;
+
+  const xxxx_func_result = xxxx_func();
+  // ...
+
+})();
+```
+
+
+----------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+## Chapter 3
+
+
+### JS BigInt to Wasm i64 integration
+
+[WebAssembly integration with JavaScript BigInt · V8](https://v8.dev/features/wasm-bigint)
+
+> JavaScriptのNumbersはdouble、つまり64ビット浮動小数点値です。このような値には、あらゆる32ビット整数を完全な精度で含むことができますが、すべての64ビット整数を含むことができるわけではありません。一方、WebAssemblyは、i64型という64ビット整数を完全にサポートしています。例えば、Wasmの関数がi64を返す場合、JavaScriptからその関数を呼び出すと、VMは次のような例外を発生させる：
+> ```
+> TypeError: Wasm function signature contains illegal type
+> ```
+
+
+> WebAssembly BigIntの統合は、Chrome 85（2020-08-25リリース）を含む複数のブラウザで実装されていますので、今日からお試しください！
+
+その他参考
+
+- [Roadmap - WebAssembly](https://webassembly.org/roadmap/)
+- [WebAssembly/JS-BigInt-integration: JavaScript BigInt to WebAssembly i64 integration](https://github.com/WebAssembly/JS-BigInt-integration)
+
+
+### get と set 
+
+- `local.get` や `global.get` : そのスコープから指定の値を取り出し、スタックに積む（プッシュする）。
+- `local.set` や `global.set` : スタックから値を１つポップし（取り出し）、そのスコープにセットする。
+
+**スタックの視点からみると get がプッシュで set がポップ。**
+
+
+
+
+
 
 
 
 
 ## Chapter 2
-
 
 ### Javascript の数値型
 
@@ -28,11 +94,11 @@ const bytes = fs.readFileSync(__dirname + '/xxxxxxxx.wasm');
 ```js
 const fs = require('fs');
 const basename = __filename.split(/[./]/).reverse()[1];
-const bytes = fs.readFileSync(__dirname + '/' + basename + '.wasm');
+const bytes = fs.readFileSync(`${__dirname}/${basename}.wasm`);
 ```
 
 
-### wasm 側の関数を呼び出すイディオム（Javascript側）
+### [wasm 側の関数を呼び出すイディオム（Javascript側）
 
 即時実行関数式 (IIFE) の最後の `()` を忘れがちなので注意。
 
@@ -49,6 +115,8 @@ const bytes = fs.readFileSync(__dirname + '/' + basename + '.wasm');
 
 })();
 ```
+
+
 
 
 
