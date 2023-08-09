@@ -2,6 +2,9 @@
 入門 WebAssembly https://www.shoeisha.co.jp/book/detail/9784798173597
 （正誤表もあり）
 
+資料
+- Modules — WebAssembly 2.0 (Draft 2023-07-24) https://webassembly.github.io/spec/core/text/modules.html
+
 ## よく使うイディオム
 
 ```js
