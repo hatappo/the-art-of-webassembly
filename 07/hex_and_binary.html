@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0">
+    <title>Hex and Binary</title>
+ 
+    <script>
+      /** 64KB のメモリブロックを確保。wasm 側との文字列のやり取りに使う。 */
+      const memory = new WebAssembly.Memory({ initial: 1 });
+
+      /** 結果を表示するDOM要素。wasm モジュールの準備ができているかの判定に使うために初期値を null に */
+      var output = null
+
+      /**
+       * wasm モジュールがインスタンス化されると関数が設定される
+       */
+      var setOutput = (number) => {
+        // wasm モジュールがインスタンス化される前に
+        // この関数を実行すると、このメッセージが表示される
+        console.log("function not available");
+        return 0;
+      };
+
+      /**
+       * この関数はボタンクリックによって呼び出され、
+       * wasm モジュールがインスタンス化される前にこの関数を実行すると、このメッセージが表示される
+       */
+      function setNumbers(number) {
+        if (output == null) {
+          // ページが完全に読み込まれていない場合は制御を戻す
+          return;
+        }
+        
+        /** wasm の setOutput 関数を呼び出すと HTML 文字列が生成され、線形メモリに格納され、その長さが返される */
+        let len = setOutput(number);
+
+        /** 線形メモリ内の HTML 文字列の位置と長さは分かっているので、メモリバッファからその文字列を取り出すことができる */
+        let bytes = new Uint8Array(memory.buffer, 1024, len);
+
+        /** 線形メモリから取り出したバイトを JS 文字列に変換し、 output の HTML を設定 */
+        output.innerHTML = new TextDecoder('utf8').decode(bytes);
+      }
+
+      /**
+       * ページのロード時に実行される関数。
+       */
+      function onPageLoad() {
+        // ページの読み込みが完了したら output 変数に "output" という id を持つ要素を割り当てる
+        output = document.getElementById("output");
+        var message_num = 0;
+      }
+
+      /**
+       * wasm 側がインポートする JS 関数のオブジェクト
+       */
+      let importObject = {
+        env: {
+          buffer: memory
+        }
+      };
+
+      /**
+       * この JS(HTML) ファイルがロードされたときに実行される即時関数。
+       * この関数の最後にボタンを見える化しているので、ロードされるまでボタンが押せないようになっている効果。
+       */
+      (async () => {
+        let obj = await WebAssembly.instantiateStreaming(fetch('hex_and_binary.wasm'), importObject);
+        // setOutput 変数に wasm 側から エクスポートした setOutput 関数をセット
+        setOutput = obj.instance.exports.setOutput;
+        let btn = document.getElementById("set_numbers_button");
+        btn.style.display = "block";
+      })();
+
+    </script>
+
+  </head>
+
+  <body onload="onPageLoad()" style="font-family: 'Courier New', Courier, monospace;">
+    <div id="output"><!-- wasm 側からの出力を表示 -->
+        <h1>0</h1>
+        <h4>0x0</h4>
+        <h4> 0000 0000 0000 0000 0000 0000 0000 0000</h4>
+    </div>
+    <br>
+    <!-- 16進数と2進数に変換する値をユーザーがここに入力 -->
+    <input type="number" id="val" value="0"><br><br>
+    <!-- ユーザーがこのボタンをクリックしたら wasm 側の関数を実行 -->
+    <button id="set_numbers_button" type="button" style="display: none;"
+      onclick="setNumbers(document.getElementById('val').value)">
+      Set Numbers
+    </button>
+
+  </body>
+
+</html>

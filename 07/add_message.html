@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0">
+    <title>Add Message</title>
+ 
+    <script>
+      /**
+       * wasm モジュールのストリーミングとインスタンス化は非同期で実行される。
+       * そのためイベントの発生順序を強制的に制御してそれぞれの状況で正常に動作することをテストするために sleep 関数を作成。 
+       * sleep 関数の利用箇所もコメントアウトされているので適宜有効化して試してみる。 -> (a), (b)
+       */
+      const sleep = m => new Promise(r => setTimeout(r, m));
+
+      /** 足し算の結果を表示するDOM要素。wasm モジュールの準備ができているかの判定に使うために初期値を null に */
+      var output = null;
+
+      /** wasm 側から JS 側にエクスポートする関数を保持する変数 */
+      var add_message_function;
+
+      /**
+       * DOM に文字列を書き込む関数。wasm 側にエクスポートしている
+       */
+      var log_add_message = (a, b, sum) => {
+        // 
+        if (output == null) {
+          console.log("page load not complete: log_add_message");
+          return;
+        }
+        output.innerHTML += `${a} + ${b} = ${sum}<br>`;
+      }
+
+      /**
+       * wasm 側がインポートする JS 関数のオブジェクト
+       */
+       let importObject = {
+        env: {
+          log_add_message: log_add_message,
+        }
+      };
+
+      /**
+       * この JS(HTML) ファイルがロードされたときに実行される即時関数。
+       * この関数の最後にボタンを見える化しているので、ロードされるまでボタンが押せないようになっている効果。
+       */
+       (async () => {
+        // wasm モジュールの読み込みに時間がかかってしまった場合をシミュレート (a)
+        await sleep(2000);
+        let obj = await WebAssembly.instantiateStreaming(fetch('add_message.wasm'), importObject);
+        add_message_function = obj.instance.exports.add_message;
+        let btn = document.getElementById("add_message_button");
+        btn.style.display = "block";
+      })();
+
+      /**
+       * ページのロード時に実行される関数。
+       * どうやってイベントリスナに登録してるのかなと思ったら body タグに <body onLoad="onPageLoad"> している
+       */
+       function onPageLoad() {
+        console.log('onPageLoad() was called');
+        // ウェブページの読み込みに時間がかかってしまった場合をシミュレート (b)
+        (async () => {
+          await sleep(2000);
+          output = document.getElementById("output");
+        })();
+      }
+    </script>
+
+  </head>
+
+  <body onload="onPageLoad()" style="font-family: 'Courier New', Courier, monospace;">
+
+    <input type="number" id="a_val" value="0"><br><br>
+    <input type="number" id="b_val" value="0"><br><br>
+
+    <!-- onclick イベントで add_message_function 関数（＝ wasm 側の add_message 関数がエクスポートされた関数）に２つの数値を渡している -->
+    <button id="add_message_button" type="button" style="display: none;"
+            onclick="add_message_function(
+              document.getElementById('a_val').value,
+              document.getElementById('b_val').value )">
+      Add Values
+    </button>
+
+    <br>
+
+    <p id="output" style="float:left; width: 200px; min-height: 300px;"></p>
+
+  </body>
+
+</html>
