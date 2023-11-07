@@ -314,9 +314,11 @@
   (func (export "setOutput") (param $num i32) (result i32)
     ;; $num の値から 10 進数文字列を作成
     (call $set_dec_string
-      (local.get $num) (global.get $dec_string_len)) ;; $num の値から 16 進数文字列を作成
+      (local.get $num) (global.get $dec_string_len))
+    ;; $num の値から 16 進数文字列を作成
     (call $set_hex_string
-      (local.get $num) (global.get $hex_string_len)) ;; $num の値から 2 進数文字列を作成
+      (local.get $num) (global.get $hex_string_len))
+    ;; $num の値から 2 進数文字列を作成
     (call $set_bin_string
       (local.get $num) (global.get $bin_string_len))
     
