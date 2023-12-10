@@ -30,12 +30,18 @@ const bytes = fs.readFileSync(`${__dirname}/${basename}.wasm`);
 ----------------------------------------
 
 
+## Chapter 10
 
+デバッガのコンソールに貼る用
 
-
-
-
-
+```
+$var0 // $x1: 0
+$var1 // $y1: 1
+$var2 // $x2: 4
+$var3 // $y2: 4
+$var4 // $x_dist: -4
+$var5 // $y_dist:  5
+```
 
 
 

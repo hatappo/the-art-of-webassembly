@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+  <h1>Stack Trace. Open the dev console.</h1>
+  <script>
+    let importObject = {
+      js: {
+        log_stack_trace: function (level) {
+          console.trace(`level=${level}`);
+        }
+      }
+    }; // ここのセミコロン抜けててエラーになってしばらくはまった。エラー内容↓
+/*
+stack_trace.html:19 Uncaught TypeError: {(intermediate value)} is not a function
+    at stack_trace.html:19:5
+*/
+
+    (async () => {
+      let obj = await WebAssembly.instantiateStreaming(
+        fetch('stack_trace.wasm'), importObject);
+      obj.instance.exports.call_stack_trace();
+    })();
+  </script>
+</body>
+</html>
