@@ -29,6 +29,49 @@ const bytes = fs.readFileSync(`${__dirname}/${basename}.wasm`);
 
 ----------------------------------------
 
+## Chapter 11
+
+### [AssemblyScript for VSCode - Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=saulecabrera.asls)
+
+AssemblyScript の LSP。検索するとこれ以外にも同様の拡張機能があるようだ。
+
+リポジトリ https://github.com/Shopify/vscode-as は Public archive 状態になっている。
+
+- `assembly/` フォルダ配下にあるファイルが対象になる。
+- 上記は設定で変えられる。 設定キー： `asls.*`
+
+### `asc` コマンド
+
+`npm install -D assemblyscript` でグローバルではリポジトリに入れて `npx` 経由で使うようにした。
+
+> -o の後に.wat ファイルの名前を指定すると WAT コードが生成され、.wasm ファイ ルの名前を指定すると WebAssembly バイナリモジュールが生成されます。
+
+と本には書かれているが `npx asc as_add.ts -Oz -o as_add.wat` したらテキストファイルではなくバイナリファイルが生成された。
+
+正しくは以下のとおり。
+
+- `-t foo.wat` -> wat テキストをファイル出力
+- `-o foo.wasm` -> wasm バイナリをファイル出力
+
+この２つのオプションは同時に指定も可能。例えば、
+
+```sh
+$ npx asc as_add.ts -Oz -t as_add.wat -o as_add.wasm
+
+$ ls as_add.*
+as_add.ts   as_add.wasm as_add.wat
+
+$ head -1 as_add.wat
+(module
+
+$ head -1 as_add.wasm
+asm`AddIntsmemory
+```
+
+
+
+
+
 
 ## Chapter 10
 
@@ -42,9 +85,6 @@ $var3 // $y2: 4
 $var4 // $x_dist: -4
 $var5 // $y_dist:  5
 ```
-
-
-
 
 ## Chapter 3
 
