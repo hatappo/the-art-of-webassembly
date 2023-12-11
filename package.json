@@ -3,5 +3,8 @@
     "assemblyscript": "^0.27.22",
     "connect": "^3.7.0",
     "server-static": "^2.0.5"
+  },
+  "dependencies": {
+    "@assemblyscript/loader": "^0.27.22"
   }
 }
