@@ -68,9 +68,33 @@ $ head -1 as_add.wasm
 asm`AddIntsmemory
 ```
 
+例えば、こういうふうに関数化しといてもいい。
+```
+function my-asc { npx asc $1.ts -Oz -t $1.wat -o $1.wasm }
+```
+
+### [@assemblyscript/loader](https://github.com/AssemblyScript/assemblyscript/tree/main/lib/loader)
+
+線型メモリを媒介にした複雑な文字列の操作をかなり簡単に書けるようにしてくれるヘルパーライブラリ。
+
+> 効率を犠牲にすることなく、AssemblyScript モジュールの操作を最大限に便利にする小さなモジュール ローダー。これは、WebAssembly API の関連部分をミラーリングすると同時に、文字列、配列、クラスを割り当てて読み取るためのユーティリティも提供します。
+
+しかし現在は **deprecated**
+
+> 非推奨の通知:ローダーは AssemblyScript 0.20 で非推奨になりました。しばらくは動作し続けると思われますが、新しい [static bindings](https://www.assemblyscript.org/compiler.html#host-bindings) 生成に切り替えることをお勧めします。
 
 
+### WARNING AS235: Only variables, functions and enums become WebAssembly module exports.
 
+現在は class の export はサポートされていない。本の内容が古いようだ。
+
+[javascript - How to export classes from AssemblyScript? - Stack Overflow](https://stackoverflow.com/questions/71907257/how-to-export-classes-from-assemblyscript)
+
+### Note
+
+> ただし、TypeScript の number 型を使う代わりに、32 ビット浮動 小数点数である f32 型を使っています。AssemblyScript で number 型を使う場合は、64 ビッ ト浮動小数点数(f64)を使うことになります。ほとんどの状況では、f64 型は WebAssembly で最もパフォーマンスが低い型です。
+
+> AssemblyScript ローダーを使うバージョンでは、1.7 倍もの時間がかかっています。初期化 の呼び出しをループに入れると、その差はさらに歴然とします。AssemblyScript ローダーを 使うときには、JavaScript と AssemblyScript の間の呼び出しの数ができるだけ少なくなるよ うな構造にするとよいでしょう。
 
 
 ## Chapter 10
