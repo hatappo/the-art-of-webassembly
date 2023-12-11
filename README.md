@@ -90,11 +90,19 @@ function my-asc { npx asc $1.ts -Oz -t $1.wat -o $1.wasm }
 
 [javascript - How to export classes from AssemblyScript? - Stack Overflow](https://stackoverflow.com/questions/71907257/how-to-export-classes-from-assemblyscript)
 
+廃止されたのは 2022年3月: https://github.com/AssemblyScript/assemblyscript/pull/2157
+`Deprecation of the loader` のところ。
+
+
 ### Note
 
 > ただし、TypeScript の number 型を使う代わりに、32 ビット浮動 小数点数である f32 型を使っています。AssemblyScript で number 型を使う場合は、64 ビッ ト浮動小数点数(f64)を使うことになります。ほとんどの状況では、f64 型は WebAssembly で最もパフォーマンスが低い型です。
 
 > AssemblyScript ローダーを使うバージョンでは、1.7 倍もの時間がかかっています。初期化 の呼び出しをループに入れると、その差はさらに歴然とします。AssemblyScript ローダーを 使うときには、JavaScript と AssemblyScript の間の呼び出しの数ができるだけ少なくなるよ うな構造にするとよいでしょう。
+
+
+
+
 
 
 ## Chapter 10
@@ -109,6 +117,10 @@ $var3 // $y2: 4
 $var4 // $x_dist: -4
 $var5 // $y_dist:  5
 ```
+
+
+
+
 
 ## Chapter 3
 
